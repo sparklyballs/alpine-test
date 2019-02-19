@@ -8,6 +8,7 @@ RUN \
 	apk add --no-cache \
 	bash \
 	curl \
+	jq \
 	tar
 
 # set shell
@@ -19,7 +20,7 @@ RUN \
 	&& mkdir -p \
 		/overlay-src \
 	&& OVERLAY_RELEASE=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
-	| awk '/tag_name/{print $4;exit}' FS='[""]') || : \
+		| jq -r .tag_name) \
 	&& curl -o \
 	/tmp/overlay.tar.gz -L \
 	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_RELEASE}/s6-overlay-amd64.tar.gz" \
