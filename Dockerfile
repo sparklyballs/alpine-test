@@ -7,23 +7,28 @@ FROM alpine:${ALPINE_VER} as fetch-stage
 RUN \
 	apk add --no-cache \
 	bash \
-	curl \
-	jq \
-	tar
+	curl
 
 # set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# fetch overlay
+# fetch version file
 RUN \
 	set -ex \
+	&& curl -o \
+	/tmp/version.txt -L \
+	"https://raw.githubusercontent.com/sparklyballs/versioning/master/version.txt"
+
+# fetch overlay
+# hadolint ignore=SC1091
+RUN \
+	. /tmp/version.txt \
+	&& set -ex \
 	&& mkdir -p \
 		/overlay-src \
-	&& OVERLAY_RELEASE=$(curl -sX GET "https://api.github.com/repos/just-containers/s6-overlay/releases/latest" \
-		| jq -r .tag_name) \
 	&& curl -o \
 	/tmp/overlay.tar.gz -L \
-	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_RELEASE}/s6-overlay-amd64.tar.gz" \
+	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-amd64.tar.gz" \
 	&& tar xf \
 	/tmp/overlay.tar.gz -C \
 	/overlay-src --strip-components=1
