@@ -4,7 +4,7 @@ FROM alpine:${ALPINE_VER} as fetch-stage
 ############## fetch stage ##############
 
 # overlay arch
-ARG OVERLAY_ARCH="amd64"
+ARG OVERLAY_ARCH="armhf"
 
 # install fetch packages
 RUN \
