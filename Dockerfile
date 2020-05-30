@@ -1,4 +1,4 @@
-ARG ALPINE_VER="3.12"
+ARG ALPINE_VER="3.11"
 FROM alpine:${ALPINE_VER} as fetch-stage
 
 ############## fetch stage ##############
