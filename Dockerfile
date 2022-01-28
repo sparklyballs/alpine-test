@@ -4,7 +4,7 @@ FROM alpine:${ALPINE_VER} as fetch-stage
 ############## fetch stage ##############
 
 # overlay arch
-ARG OVERLAY_ARCH="amd64"
+ARG OVERLAY_ARCH="x86_64"
 
 # install fetch packages
 RUN \
@@ -31,7 +31,7 @@ RUN \
 		/overlay-src \
 	&& curl -o \
 	/tmp/overlay.tar.gz -L \
-	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-${OVERLAY_ARCH}.tar.gz" \
+	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-${OVERLAY_ARCH}-${S6_OVERLAY_RELEASE}.tar.xz" \
 	&& tar xf \
 	/tmp/overlay.tar.gz -C \
 	/overlay-src --strip-components=1
