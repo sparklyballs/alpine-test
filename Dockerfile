@@ -30,11 +30,24 @@ RUN \
 	&& mkdir -p \
 		/overlay-src \
 	&& curl -o \
-	/tmp/overlay.tar.gz -L \
+	/tmp/overlay.tar.xz -L \
 	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-${OVERLAY_ARCH}-${S6_OVERLAY_RELEASE}.tar.xz" \
+	&& curl -o \
+	/tmp/noarch.tar.xz -L \
+	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-noarch-${S6_OVERLAY_RELEASE}.tar.xz" \
+	&& curl -o \
+	/tmp/symlinks.tar.xz -L \
+	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-symlinks-noarch-${S6_OVERLAY_RELEASE}.tar.xz" \
 	&& tar xf \
-	/tmp/overlay.tar.gz -C \
-	/overlay-src --strip-components=1
+	/tmp/overlay.tar.xz -C \
+	/overlay-src \
+	&& tar xf \
+	/tmp/noarch.tar.xz -C \
+	/overlay-src \
+	&& tar xf \
+	/tmp/symlinks.tar.xz -C \
+	/overlay-src \
+	&& sed -i 's#/command:/usr/bin:/bin#/command:/usr/bin:/bin:/usr/sbin#g' /overlay-src/etc/s6-overlay/config/global_path
 
 FROM alpine:${ALPINE_VER}
 
