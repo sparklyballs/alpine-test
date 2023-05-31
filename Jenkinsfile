@@ -11,10 +11,9 @@ options {
 environment {
 	CREDS_DOCKERHUB=credentials('420d305d-4feb-4f56-802b-a3382c561226')
 	CREDS_GITHUB=credentials('bd8b00ff-decf-4a75-9e56-1ea2c7d0d708')
-	CONTAINER_NAME = 'chiadogtest'
-	CONTAINER_REPOSITORY = 'sparklyballs/chiadogtest'
-	GITHUB_RELEASE_URL_SUFFIX = 'martomi/chiadog/releases/latest'
-	GITHUB_REPOSITORY = 'sparklyballs/chiadogtest'
+	CONTAINER_NAME = 'alpine-test'
+	CONTAINER_REPOSITORY = 'sparklyballs/alpine-test'
+	GITHUB_REPOSITORY = 'sparklyballs/alpine-test'
 	HADOLINT_OPTIONS = '--ignore DL3008 --ignore DL3013 --ignore DL3018 --ignore DL3028 --format json'
 	}
 
@@ -24,6 +23,7 @@ stage('Query Release Version') {
 steps {
 script{
 	env.RELEASE_VER = sh(script: 'curl -sX GET https://alpinelinux.org/downloads/ | grep -Po "(?<=Version <strong>)[^<]+"', returnStdout: true).trim() 
+	env.RELEASE_VER = ('$RELEASE_VER'.split('.',2).join('.')
 	}
 	}
 	}

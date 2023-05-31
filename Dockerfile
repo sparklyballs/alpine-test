@@ -1,9 +1,10 @@
-ARG ALPINE_VER="3.18"
-FROM alpine:${ALPINE_VER} as fetch-stage
+ARG RELEASE=alpine:3.18
+FROM $RELEASE as fetch-stage
 
 ############## fetch stage ##############
 
-# overlay arch
+# build args
+ARG S6_OVERLAY_RELEASE
 ARG OVERLAY_ARCH="x86_64"
 
 # install fetch packages
@@ -28,7 +29,7 @@ RUN \
 	. /tmp/version.txt \
 	&& set -ex \
 	&& mkdir -p \
-		/overlay-src \
+		/src/overlay \
 	&& curl -o \
 	/tmp/overlay.tar.xz -L \
 	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-${OVERLAY_ARCH}.tar.xz" \
@@ -40,15 +41,15 @@ RUN \
 	"https://github.com/just-containers/s6-overlay/releases/download/v${S6_OVERLAY_RELEASE}/s6-overlay-symlinks-noarch.tar.xz" \
 	&& tar xf \
 	/tmp/overlay.tar.xz -C \
-	/overlay-src \
+	/src/overlay \
 	&& tar xf \
 	/tmp/noarch.tar.xz -C \
-	/overlay-src \
+	/src/overlay \
 	&& tar xf \
 	/tmp/symlinks.tar.xz -C \
-	/overlay-src
+	/src/overlay
 
-FROM alpine:${ALPINE_VER}
+FROM $RELEASE
 
 ############## runtime stage ##############
 
@@ -80,7 +81,7 @@ RUN \
 
 
 # add artifacts from fetch stage
-COPY --from=fetch-stage /overlay-src/ /
+COPY --from=fetch-stage /src/overlay/ /
 
 # add local files
 COPY root/ /
