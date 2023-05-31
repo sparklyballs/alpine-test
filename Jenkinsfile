@@ -23,7 +23,7 @@ stage('Query Release Version') {
 steps {
 script{
 	env.RELEASE_VER = sh(script: 'curl -sX GET https://alpinelinux.org/downloads/ | grep -Po "(?<=Version <strong>)[^<]+"', returnStdout: true).trim() 
-	env.RELEASE_VER = ('$RELEASE_VER'.split('.',2).join('.'))
+	env.RELEASE_VER = ('$env.RELEASE_VER'.split('.',2).join('.'))
 	}
 	}
 	}
