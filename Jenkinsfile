@@ -51,6 +51,7 @@ steps {
 
 stage('Build Docker Image') {
 steps {
+	echo "version string ${RELEASE_VER}"
 	sh ('docker buildx build \
 	--no-cache \
 	--pull \
