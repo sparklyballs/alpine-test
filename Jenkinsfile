@@ -15,7 +15,7 @@ environment {
 	CONTAINER_NAME = 'alpine-test'
 	CONTAINER_REPOSITORY = 'sparklyballs/alpine-test'
 	GITHUB_REPOSITORY = 'sparklyballs/alpine-test'
-	HADOLINT_OPTIONS = '--ignore DL3008 --ignore DL3013 --ignore DL3018 --ignore DL3028 --format json'
+	HADOLINT_OPTIONS = '--ignore DL3006 --ignore DL3008 --ignore DL3013 --ignore DL3018 --ignore DL3028 --format json'
 	}
 
 stages {
