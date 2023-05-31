@@ -9,6 +9,7 @@ options {
 	}
 
 environment {
+	BASE_NAME = 'alpine'
 	CREDS_DOCKERHUB=credentials('420d305d-4feb-4f56-802b-a3382c561226')
 	CREDS_GITHUB=credentials('bd8b00ff-decf-4a75-9e56-1ea2c7d0d708')
 	CONTAINER_NAME = 'alpine-test'
@@ -22,7 +23,7 @@ stages {
 stage('Query Release Version') {
 steps {
 script{
-	env.RELEASE_VER = sh(script: 'curl -sX GET "https://alpinelinux.org/downloads/" | grep -Po "(?<=Version <strong>)[^<]+"', returnStdout: true).trim()
+	env.RELEASE_VER = sh(script: 'curl -sX GET "https://alpinelinux.org/downloads/" | grep -Po "(?<=Version <strong>)[^<]+" | cut -f1,2 -d"."', returnStdout: true).trim()
 	}
 	}
 	}
@@ -55,7 +56,7 @@ steps {
 	--pull \
 	-t $CONTAINER_REPOSITORY:latest \
 	-t $CONTAINER_REPOSITORY:$RELEASE_VER \
-	--build-arg RELEASE=$RELEASE_VER \
+	--build-arg RELEASE=$BASE_NAME:$RELEASE_VER \
 	.')
 	}
 	}
