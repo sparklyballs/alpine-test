@@ -1,5 +1,5 @@
 # hadolint global ignore=DL3006
-ARG RELEASE=alpine:3.19
+ARG RELEASE=alpine:3.22
 FROM $RELEASE as fetch-stage
 
 ############## fetch stage ##############
